@@ -1,0 +1,15 @@
+<!-- main.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Select Year</title>
+</head>
+<body style="font-size: 50px;">
+    <h1>Select Year</h1>
+    <ul>
+        {% for year in years %}
+        <li><a href="{% url 'branches' year.id %}">{{ year.name }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

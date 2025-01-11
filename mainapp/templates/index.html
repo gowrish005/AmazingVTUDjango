@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazing Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        
+:root {
+    --primary: #7c3aed;
+    --secondary: #06b6d4;
+    --accent: #f43f5e;
+    --background: #030712;
+    --card-bg: #1f2937;
+    --text: #f8fafc;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background-color: var(--background);
+    color: var(--text);
+    overflow-x: hidden;
+}
+
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+.cyber-border {
+    position: relative;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    border-radius: 1rem;
+    background: linear-gradient(var(--card-bg), var(--card-bg)) padding-box,
+                linear-gradient(45deg, var(--primary), var(--secondary), var(--accent)) border-box;
+}
+
+.program {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.program-content {
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+    position: relative;
+}
+
+.program:hover .program-content {
+    transform: rotateY(180deg);
+}
+
+.program-front,
+.program-back {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.program-back {
+    transform: rotateY(180deg);
+    background: var(--card-bg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.glowing-btn {
+    position: relative;
+    background: linear-gradient(45deg, var(--primary), var(--secondary));
+    border-radius: 0.5rem;
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: 600;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.glowing-btn::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--primary), var(--secondary), var(--accent));
+    z-index: -1;
+    border-radius: 0.6rem;
+    filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.glowing-btn:hover::before {
+    opacity: 1;
+}
+
+.glowing-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.scroll-indicator {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 100px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    z-index: 10;
+}
+
+.scroll-progress {
+    width: 100%;
+    background: linear-gradient(to bottom, var(--primary), var(--secondary));
+    position: absolute;
+    bottom: 0;
+    transition: height 0.1s ease;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.floating {
+    animation: float 6s ease-in-out infinite;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--primary), var(--secondary));
+    border-radius: 5px;
+}
+
+.loader {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+    z-index: 9999;
+}
+
+.loader-content {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--primary);
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+    </style>
+    <script>
+               // Loader
+       window.addEventListener('load', () => {
+        document.querySelector('.loader').style.display = 'none';
+    });
+
+    // Particles.js Config
+    particlesJS("particles-js", {
+        particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: "#ffffff" },
+            shape: { type: "circle" },
+            opacity: { value: 0.5, random: false },
+            size: { value: 3, random: true },
+            line_linked: {
+                enable: true,
+                distance: 150,
+                color: "#ffffff",
+                opacity: 0.4,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 6,
+                direction: "none",
+                random: false,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" },
+                resize: true
+            },
+            modes: {
+                repulse: { distance: 100, duration: 0.4 },
+                push: { particles_nb: 4 }
+            }
+        },
+        retina_detect: true
+    });
+
+    // Scroll Progress
+    window.addEventListener('scroll', () => {
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        document.querySelector('.scroll-progress').style.height = scrolled + "%";
+    });
+
+    // Smooth Scroll
+    document.querySelector('.scroll-btn').addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector('#programs');
+        target.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // GSAP Animations
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Header Animation
+    gsap.from('header h1', {
+        duration: 1.5,
+        y: 100,
+        opacity: 0,
+        ease: 'power4.out'
+    });
+
+    // Program Cards Animation
+    gsap.utils.toArray('.program').forEach((program, i) => {
+        gsap.from(program, {
+            scrollTrigger: {
+                trigger: program,
+                start: 'top bottom-=100',
+                toggleActions: 'play none none reverse'
+            },
+            y: 100,
+            opacity: 0,
+            duration: 1,
+            delay: i * 0.2,
+            ease: 'power4.out'
+        });
+    });
+
+    // Three.js Scene Setup
+   // Three.js Scene Setup
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+const container = document.getElementById('canvas-container');
+
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setClearColor(0x000000, 0);
+container.appendChild(renderer.domElement);
+
+// Create text geometry
+const loader = new THREE.FontLoader();
+const textMesh = new THREE.Mesh();
+const textMaterial = new THREE.MeshPhongMaterial({
+color: 0xffffff,
+specular: 0x666666
+});
+
+loader.load('https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/fonts/helvetiker_regular.typeface.json', function(font) {
+const textGeometry = new THREE.TextGeometry('Web Lab', {
+    font: font,
+    size: 3,
+    height: 0.5,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: 0.1,
+    bevelSize: 0.05,
+    bevelOffset: 0,
+    bevelSegments: 5
+});
+
+textGeometry.center();
+textMesh.geometry = textGeometry;
+textMesh.material = textMaterial;
+scene.add(textMesh);
+});
+
+// Lighting
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+const pointLight = new THREE.PointLight(0xffffff, 1);
+pointLight.position.set(5, 5, 5);
+scene.add(pointLight);
+
+camera.position.z = 15;
+
+// Animation
+function animate() {
+requestAnimationFrame(animate);
+
+if (textMesh) {
+    textMesh.rotation.y += 0.005;
+    textMesh.rotation.x = Math.sin(Date.now() * 0.001) * 0.1;
+}
+
+renderer.render(scene, camera);
+}
+
+// Handle window resize
+window.addEventListener('resize', () => {
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+camera.aspect = width / height;
+camera.updateProjectionMatrix();
+renderer.setSize(width, height);
+});
+
+// Initialize animation
+animate();
+
+// Additional GSAP Animations
+// Program Cards Stagger Animation
+// GSAP Animations
+gsap.registerPlugin(ScrollTrigger);
+
+// Header Animation
+gsap.from('header h1', {
+duration: 1.5,
+y: 50,
+opacity: 0,
+ease: 'power4.out'
+});
+
+// Program Cards Animation with reduced movement
+gsap.utils.toArray('.program').forEach((program, i) => {
+gsap.from(program, {
+    scrollTrigger: {
+        trigger: program,
+        start: 'top bottom-=100',
+        toggleActions: 'play none none none'
+    },
+    y: 30,
+    opacity: 0.8,
+    duration: 0.8,
+    delay: i * 0.1,
+    ease: 'power2.out'
+});
+});
+
+// Contact Form Animation
+gsap.from('.cyber-border', {
+scrollTrigger: {
+    trigger: 'form',
+    start: 'top bottom-=100',
+    toggleActions: 'play none none none'
+},
+scale: 0.95,
+opacity: 0.8,
+duration: 0.8,
+ease: 'power2.out'
+});
+
+// Footer Links Animation
+gsap.from('footer a', {
+scrollTrigger: {
+    trigger: 'footer',
+    start: 'top bottom-=50',
+    toggleActions: 'play none none none'
+},
+y: 20,
+opacity: 0.8,
+duration: 0.8,
+stagger: 0.1,
+ease: 'power2.out'
+});
+    </script>
+
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-content"></div>
+    </div>
+
+    <div id="particles-js"></div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-progress"></div>
+    </div>
+
+    <div class="content">
+        <header class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <div id="canvas-container" class="absolute inset-0"></div>
+            <div class="text-center z-10">
+                <h1 class="text-7xl font-bold mb-6 floating" style="opacity: 0.8073;">The Amazing Team</h1>
+                <p class="text-2xl text-gray-300 mb-4">@CIT-NC Bangalore</p>
+                
+                <div class="mt-12">
+                    <a href="CN.html" class="glowing-btn">
+                        Computer Networks [BCS502]
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </a>
+                </div>
+
+                <div class="mt-12">
+                    <a href="WebLab.html" class="glowing-btn">
+                        Web Lab [BCSL504]
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </a>
+                </div>
+
+                <div class="mt-12">
+                    <a href="#connect" class="glowing-btn">
+                        More on the way ...
+                    </a>
+                </div>
+
+            </div>
+        </header>
+
+        <section id="connect" class="py-20">
+            <div class="container mx-auto px-4">
+                <div class="cyber-border max-w-2xl mx-auto p-8">
+                    <h2 class="text-4xl font-bold mb-8 text-center">Get in Touch</h2>
+                    <form action="https://formsubmit.co/32711d969a8a2a4c4c54343d7e00d7ee" method="POST" class="space-y-6">
+                        <div class="relative">
+                            <input type="text" name="name" required
+                                   class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                            <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Name</label>
+                        </div>
+
+                        <div class="relative">
+                            <input type="email" name="email" required
+                                   class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                            <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Email</label>
+                        </div>
+
+                        <div class="relative">
+                            <textarea name="message" rows="4" required
+                                      class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all"></textarea>
+                            <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Message</label>
+                        </div>
+                        <button type="submit" class="glowing-btn w-full">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-12 relative overflow-hidden">
+            <div class="container mx-auto px-4 text-center">
+                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 mb-8">
+                    <a href="https://gowrish005.vercel.app/" class="glowing-btn" target="_blank">
+                        <i class="fas fa-user-shield mr-2"></i>Admin
+                    </a>
+                    <a href="https://portfolio-sahilagowdas-projects.vercel.app/" class="glowing-btn" target="_blank">
+                        <i class="fas fa-paint-brush mr-2"></i>Designer
+                    </a>
+                    <a href="https://github.com/the-amazing-team" class="glowing-btn" target="_blank">
+                        <i class="fas fa-users mr-2"></i>Team
+                    </a>
+                </div>
+                <a href="#" onclick="confirmRedirect(event)">
+                    <img src="https://northcampus.cambridge.edu.in/wp-content/uploads/2021/03/NC-site-Logo.png" class="w-30 mx-auto mb-8" alt="Logo">
+                    <p class="text-gray-400">© 2025 The Amazing Team @CITNC</p>
+                </a>
+                <script>
+                    function confirmRedirect(event) {
+                        event.preventDefault();
+                        if (confirm('Do you want to go to the college website?')) {
+                            window.open('https://northcampus.cambridge.edu.in/', '_blank');
+                        }
+                    }
+                </script>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
