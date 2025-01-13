@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Module</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'mainapp/style.css' %}">
+    <script src="{% static 'mainapp/script.js' %}" defer></script>
+</head>
+<body>
+    <div class="loader">
+        <div class="loader-content"></div>
+    </div>
+
+    <div id="particles-js"></div>
+
+    <div class="scroll-indicator">
+        <div class="scroll-progress"></div>
+    </div>
+
+    {% comment %} <div class="content">
+        <header class="min-h-screen flex items-center justify-center relative overflow-hidden">
+            <div id="canvas-container" class="absolute inset-0"></div>
+            <div class="text-center z-10">
+                <h1 class="text-7xl font-bold mb-6 floating" style="opacity: 0.8073;">Upload a New Module</h1>
+                <div class="mt-12 flex justify-center space-x-4">
+                    <a href="/" class="glowing-btn" style="margin-top: 30px;">
+                        Home Page
+                    </a>
+                </div>
+            </div>
+        </header> {% endcomment %}
+        
+        <section id="upload" class="py-10">
+            <div class="container mx-auto px-4">
+                <div class="cyber-border max-w-2xl mx-auto p-8">
+                    <h2 class="text-4xl font-bold mb-8 text-center">Upload Module</h2>
+                    <form method="post" enctype="multipart/form-data" class="space-y-6">
+                        {% csrf_token %}
+                        <div class="relative">
+                            <label for="name" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Module Name:</label>
+                            <input type="text" name="name" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                        </div>
+                        <div class="relative">
+                            <label for="description" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Description:</label>
+                            <textarea name="description" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all"></textarea>
+                        </div>
+                        <div class="relative">
+                            <label for="image" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Image:</label>
+                            <input type="file" name="image" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                        </div>
+                        <div class="relative">
+                            <label for="file" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">File:</label>
+                            <input type="file" name="file" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                        </div>
+                        <div class="relative">
+                            <label for="semester" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Semester:</label>
+                            <select name="semester" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all" onchange="fetchBranches(this.value)">
+                                <option value="">Select Semester</option>
+                                {% for semester in semesters %}
+                                    <option value="{{ semester.id }}">{{ semester.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="relative">
+                            <label for="branch" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Branch:</label>
+                            <select name="branch" required id="branch-select" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all" onchange="fetchSubjects(this.value)">
+                                <option value="">Select Branch</option>
+                                <!-- Branch options will be populated here based on selected semester -->
+                            </select>
+                        </div>
+                        <div class="relative">
+                            <label for="subject" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Subject:</label>
+                            <select name="subject" required id="subject-select" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                                <option value="">Select Subject</option>
+                                <!-- Subject options will be populated here based on selected branch -->
+                            </select>
+                        </div>
+                        <button type="submit" class="glowing-btn w-full">
+                            Upload
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-12 relative overflow-hidden">
+            <div class="container mx-auto px-4 text-center">
+                <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 mb-8">
+                    <a href="https://gowrish005.vercel.app/" class="glowing-btn" target="_blank">
+                        <i class="fas fa-user-shield mr-2"></i>Admin
+                    </a>
+                    <a href="https://portfolio-sahilagowdas-projects.vercel.app/" class="glowing-btn" target="_blank">
+                        <i class="fas fa-paint-brush mr-2"></i>Designer
+                    </a>
+                    <a href="https://github.com/the-amazing-team" class="glowing-btn" target="_blank">
+                        <i class="fas fa-users mr-2"></i>Team
+                    </a>
+                </div>
+                <a href="#" onclick="confirmRedirect(event)">
+                    <img src="https://northcampus.cambridge.edu.in/wp-content/uploads/2021/03/NC-site-Logo.png" class="w-30 mx-auto mb-8" alt="Logo">
+                    <p class="text-gray-400">© 2025 The Amazing Team @CITNC</p>
+                </a>
+                <script>
+                    function confirmRedirect(event) {
+                        event.preventDefault();
+                        if (confirm('Do you want to go to the college website?')) {
+                            window.open('https://northcampus.cambridge.edu.in/', '_blank');
+                        }
+                    }
+                </script>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        function toggleNewBranch(value) {
+            document.getElementById('new_branch').style.display = value === 'new' ? 'block' : 'none';
+        }
+        function toggleNewSubject(value) {
+            document.getElementById('new_subject').style.display = value === 'new' ? 'block' : 'none';
+        }
+        function fetchBranches(semesterId) {
+            fetch(`/get-branches/${semesterId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    const branchSelect = document.getElementById('branch-select');
+                    branchSelect.innerHTML = '<option value="">Select Branch</option>';
+                    data.branches.forEach(branch => {
+                        const option = document.createElement('option');
+                        option.value = branch.id;
+                        option.textContent = branch.name;
+                        branchSelect.appendChild(option);
+                    });
+                });
+        }
+
+        function fetchSubjects(branchId) {
+            fetch(`/get-subjects/${branchId}/`)
+                .then(response => response.json())
+                .then(data => {
+                    const subjectSelect = document.getElementById('subject-select');
+                    subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+                    data.subjects.forEach(subject => {
+                        const option = document.createElement('option');
+                        option.value = subject.id;
+                        option.textContent = subject.name;
+                        subjectSelect.appendChild(option);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>

@@ -1,24 +1,59 @@
 from django.db import models
 
-# Create your models here.
-# models.py
-from django.db import models
-
-class Year(models.Model):
-    name = models.CharField(max_length=20)  # e.g., "1st Year"
+class Semester(models.Model):
+    name = models.IntegerField()  # e.g., "1st Semester"
 
 class Branch(models.Model):
     name = models.CharField(max_length=50)  # e.g., "CSE"
-    year = models.ForeignKey(Year, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)  # e.g., "Computer Networks"
     subjectcode = models.CharField(max_length=10)  # e.g., "CS  601"
-    year = models.ForeignKey(Year, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
 
 class Module(models.Model):
     name = models.CharField(max_length=100)  # e.g., "Module 1"
-    image = models.ImageField(upload_to='images/',null=True,blank=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
     file = models.FileField(upload_to='files/')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
+class TempModule(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    image = models.ImageField(upload_to='temp_images/', null=True, blank=True)
+    file = models.FileField(upload_to='temp_files/')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+class TempBranch(models.Model):
+    name = models.CharField(max_length=50)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
+
+class TempSubject(models.Model):
+    name = models.CharField(max_length=100)
+    subjectcode = models.CharField(max_length=10)
+    semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name

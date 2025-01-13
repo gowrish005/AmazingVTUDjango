@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Table - AmazingVTU</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 10px;
+        }
+        th {
+            background-color: #f4b084;
+        }
+        tfoot {
+            background-color: #d9ead3;
+            font-weight: bold;
+        }
+        .lab-hour {
+            background-color: #ffcccb;
+        }
+        .elective-hour {
+            background-color: #ccffcc;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:nth-child(odd) {
+            background-color: #e9f6ff;
+        }
+    </style>
+</head>
+<body>
+    <h1 align="center">Class Time Table - AmazingVTU</h1>
+    <table>
+        <!-- Table Header -->
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>9:00 - 10:00</th>
+                <th>10:00 - 11:00</th>
+                <th>11:15 - 12:15</th>
+                <th>12:15 - 1:15</th>
+                <th colspan="2">2:00 - 4:00</th>
+            </tr>
+        </thead>
+
+        <!-- Table Body -->
+        <tbody>
+            <tr>
+                <td>Monday</td>
+                <td>Mathematics</td>
+                <td>Physics</td>
+                <td>Elective 1</td>
+                <td class="elective-hour">Elective 2</td>
+                <td class="lab-hour" colspan="2">Lab - Programming</td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>English</td>
+                <td>Chemistry</td>
+                <td class="elective-hour" colspan="2">Elective 3</td>
+                <td>Free Hour</td>
+                <td class="lab-hour">Lab - Physics</td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td rowspan="2">Workshop</td>
+                <td>Mathematics</td>
+                <td>Physics</td>
+                <td class="lab-hour" colspan="2">Lab - Chemistry</td>
+                <td>Seminar</td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>Elective 2</td>
+                <td>English</td>
+                <td class="elective-hour">Elective 1</td>
+                <td class="lab-hour" colspan="2">Lab - Programming</td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td>Chemistry</td>
+                <td>Physics</td>
+                <td>Mathematics</td>
+                <td>Workshop</td>
+                <td class="lab-hour" colspan="2">Lab - Physics</td>
+            </tr>
+        </tbody>
+
+        <!-- Table Footer -->
+        <tfoot>
+            <tr>
+                <td colspan="7">Note: Highlighted hours are for Labs and Electives</td>
+            </tr>
+        </tfoot>
+    </table>
+</body>
+</html>
