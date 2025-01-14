@@ -1,18 +1,15 @@
 {
-    "version": 2,
-    "builds": [
-      {
-        "src": "manage.py",
-        "use": "@vercel/python"
-      }
-    ],
-    "routes": [
-      { "src": "/static/(.*)", "dest": "/static/$1" },
-      { "src": "/(.*)", "dest": "manage.py" }
-    ],
-    "buildCommand": "python3 manage.py collectstatic --noinput && python3 manage.py migrate",
-    "start": "gunicorn your_project_name.wsgi:application --bind 0.0.0.0:8000"
-
-  
-  }
-  
+  "version": 2,
+  "builds": [
+    {
+      "src": "manage.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    { "src": "/static/(.*)", "dest": "/static/$1" },
+    { "src": "/(.*)", "dest": "manage.py" }
+  ],
+  "buildCommand": "python3 manage.py migrate && python3 manage.py collectstatic --noinput",
+  "start": "gunicorn amazingvtu.wsgi:application --bind 0.0.0.0:8000"
+}
