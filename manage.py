@@ -3,6 +3,16 @@
 import os
 import sys
 
+from django.core.management import execute_from_command_line
+from django.core.wsgi import get_wsgi_application
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'amazingvtu.settings')
+
+# Add this line to ensure Vercel knows how to handle the app
+application = get_wsgi_application()
+
+if __name__ == "__main__":
+    execute_from_command_line(sys.argv)
 
 def main():
     """Run administrative tasks."""

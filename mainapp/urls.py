@@ -1,5 +1,8 @@
 from django.urls import path
+
+from amazingvtu import settings
 from . import views
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.main_page, name='main'),
@@ -14,3 +17,5 @@ urlpatterns = [
     path('get-branches/<int:semester_id>/', views.get_branches, name='get_branches'),
     path('get-subjects/<int:branch_id>/', views.get_subjects, name='get_subjects'),
 ]
+if not settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

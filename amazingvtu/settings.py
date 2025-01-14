@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4rckl4lq-gh8_t7=2z2x^zg+(blluf5%aixz6k_8_kb_e^^xvy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
 
@@ -128,8 +128,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Directory where media files will be stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# URL to access the media files
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
 # Add Whitenoise middleware
 MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
 
