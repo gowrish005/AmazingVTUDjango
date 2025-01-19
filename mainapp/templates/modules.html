@@ -43,13 +43,13 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {% for module in modules %}
                 <div class="program cyber-border">
-                    <div class="program-content h-[400px]">
+                    <div class="program-content {% if not module.image %}h-[300px]{% else %}h-[400px]{% endif %}">
                         <div class="program-front">
                             {% if module.image %}
                             <img src="{{ module.image.url }}" alt="{{ module.name }}" class="w-full h-48 object-cover rounded-t-lg">
                             {% endif %}
                             <div class="p-6">
-                                <h3 class="text-xl font-bold mb-4">{{ module.subject.name }} - Module : {{ module.name }}</h3>
+                                <h3 class="text-xl font-bold mb-4">{{ module.subject.name }} - {{ module.name }}</h3>
                                 <p class="text-gray-300">{{ module.description }}</p>
 
                             </div>

@@ -42,28 +42,12 @@
         <section id="upload" class="py-10">
             <div class="container mx-auto px-4">
                 <div class="cyber-border max-w-2xl mx-auto p-8">
-                    <h2 class="text-4xl font-bold mb-8 text-center">Upload Module</h2>
+                    <h2 class="text-4xl font-bold mb-8 text-center">Upload Modules</h2>
                     <form method="post" enctype="multipart/form-data" class="space-y-6">
                         {% csrf_token %}
                         <div class="relative">
-                            <label for="name" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Module Name:</label>
-                            <input type="text" name="name" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
-                        </div>
-                        <div class="relative">
-                            <label for="description" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Description:</label>
-                            <textarea name="description" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all"></textarea>
-                        </div>
-                        <div class="relative">
-                            <label for="image" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Image:</label>
-                            <input type="file" name="image" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
-                        </div>
-                        <div class="relative">
-                            <label for="file" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">File:</label>
-                            <input type="file" name="file" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
-                        </div>
-                        <div class="relative">
-                            <label for="semester" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Semester:</label>
-                            <select name="semester" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all" onchange="fetchBranches(this.value)">
+                            <label for="semester" class="absolute left-4 -top-3 bg-blue-800 px-2 text-sm">Semester:</label>
+                            <select name="semester" required class="w-full bg-blue-800/50 border-2 border-blue-700 rounded-lg p-4 focus:border-primary transition-all" onchange="fetchBranches(this.value)">
                                 <option value="">Select Semester</option>
                                 {% for semester in semesters %}
                                     <option value="{{ semester.id }}">{{ semester.name }}</option>
@@ -71,19 +55,42 @@
                             </select>
                         </div>
                         <div class="relative">
-                            <label for="branch" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Branch:</label>
-                            <select name="branch" required id="branch-select" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all" onchange="fetchSubjects(this.value)">
+                            <label for="branch" class="absolute left-4 -top-3 bg-green-800 px-2 text-sm">Branch:</label>
+                            <select name="branch" required id="branch-select" class="w-full bg-green-800/50 border-2 border-green-700 rounded-lg p-4 focus:border-primary transition-all" onchange="fetchSubjects(this.value)">
                                 <option value="">Select Branch</option>
                                 <!-- Branch options will be populated here based on selected semester -->
                             </select>
                         </div>
                         <div class="relative">
-                            <label for="subject" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Subject:</label>
-                            <select name="subject" required id="subject-select" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                            <label for="subject" class="absolute left-4 -top-3 bg-red-800 px-2 text-sm">Subject:</label>
+                            <select name="subject" required id="subject-select" class="w-full bg-red-800/50 border-2 border-red-700 rounded-lg p-4 focus:border-primary transition-all">
                                 <option value="">Select Subject</option>
                                 <!-- Subject options will be populated here based on selected branch -->
                             </select>
                         </div>
+                        <div id="modules-container">
+                            <div class="module-entry space-y-6">
+                                <div class="relative">
+                                    <label for="module_name_1" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Module Name:</label>
+                                    <input type="text" name="module_name_1" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                                </div>
+                                <div class="relative">
+                                    <label for="module_description_1" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Description:</label>
+                                    <textarea name="module_description_1" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all"></textarea>
+                                </div>
+                                <div class="relative">
+                                    <label for="module_image_1" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Image:</label>
+                                    <input type="file" name="module_image_1" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                                </div>
+                                <div class="relative">
+                                    <label for="module_file_1" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">File:</label>
+                                    <input type="file" name="module_file_1" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="glowing-btn w-full" onclick="addModuleEntry()">
+                            Add Another Module
+                        </button>
                         <button type="submit" class="glowing-btn w-full">
                             Upload
                         </button>
@@ -91,6 +98,17 @@
                 </div>
             </div>
         </section>
+
+        <div class="container mx-auto px-4 mt-8">
+            <div class="flex justify-center space-x-4">
+                <a href="{% url 'create_subject' %}" class="glowing-btn">
+                    Create Subject
+                </a>
+                <a href="{% url 'create_branch' %}" class="glowing-btn">
+                    Create Branch
+                </a>
+            </div>
+        </div>
 
         <footer class="py-12 relative overflow-hidden">
             <div class="container mx-auto px-4 text-center">
@@ -115,6 +133,62 @@
                         if (confirm('Do you want to go to the college website?')) {
                             window.open('https://northcampus.cambridge.edu.in/', '_blank');
                         }
+                    }
+
+                    function fetchBranches(semesterId) {
+                        fetch(`/get-branches/${semesterId}/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                const branchSelect = document.getElementById('branch-select');
+                                branchSelect.innerHTML = '<option value="">Select Branch</option>';
+                                data.branches.forEach(branch => {
+                                    const option = document.createElement('option');
+                                    option.value = branch.id;
+                                    option.textContent = branch.name;
+                                    branchSelect.appendChild(option);
+                                });
+                            });
+                    }
+
+                    function fetchSubjects(branchId) {
+                        fetch(`/get-subjects/${branchId}/`)
+                            .then(response => response.json())
+                            .then(data => {
+                                const subjectSelect = document.getElementById('subject-select');
+                                subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+                                data.subjects.forEach(subject => {
+                                    const option = document.createElement('option');
+                                    option.value = subject.id;
+                                    option.textContent = subject.name;
+                                    subjectSelect.appendChild(option);
+                                });
+                            });
+                    }
+
+                    function addModuleEntry() {
+                        const container = document.getElementById('modules-container');
+                        const moduleCount = container.getElementsByClassName('module-entry').length + 1;
+                        const moduleEntry = document.createElement('div');
+                        moduleEntry.className = 'module-entry space-y-6 mt-6 mb-6';
+                        moduleEntry.innerHTML = `
+                            <div class="relative">
+                                <label for="module_name_${moduleCount}" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Module Name:</label>
+                                <input type="text" name="module_name_${moduleCount}" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                            </div>
+                            <div class="relative">
+                                <label for="module_description_${moduleCount}" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Description:</label>
+                                <textarea name="module_description_${moduleCount}" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all"></textarea>
+                            </div>
+                            <div class="relative">
+                                <label for="module_image_${moduleCount}" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Image:</label>
+                                <input type="file" name="module_image_${moduleCount}" class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                            </div>
+                            <div class="relative">
+                                <label for="module_file_${moduleCount}" class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">File:</label>
+                                <input type="file" name="module_file_${moduleCount}" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                            </div>
+                        `;
+                        container.appendChild(moduleEntry);
                     }
                 </script>
             </div>

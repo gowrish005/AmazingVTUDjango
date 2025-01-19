@@ -56,6 +56,22 @@
         </div>
     </section>
 
+    <section id="existing-branches" class="py-10">
+        <div class="container mx-auto px-4">
+            <div class="cyber-border max-w-2xl mx-auto p-8">
+                <h2 class="text-4xl font-bold mb-8 text-center">Existing Branches</h2>
+                <div class="space-y-4">
+                    {% for branch in branches %}
+                        <div class="bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4">
+                            <h3 class="text-xl font-bold">{{ branch.name }}</h3>
+                            <p class="text-gray-400">Semester: {{ branch.semester.name }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="py-12 relative overflow-hidden">
         <div class="container mx-auto px-4 text-center">
             <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 mb-8">

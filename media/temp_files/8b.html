@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorted Student Records | vtucode</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #4A90E2;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4A90E2;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        tr {
+            transition: background-color 0.3s ease;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        td {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+
+            table,
+            th,
+            td {
+                display: block;
+                width: 100%;
+            }
+
+            th,
+            td {
+                box-sizing: border-box;
+            }
+
+            tr {
+                margin-bottom: 15px;
+                display: block;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+
+            th {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 50%;
+                padding-left: 15px;
+                font-weight: bold;
+                text-align: left;
+                text-transform: uppercase;
+                color: #4A90E2;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Sorted Student Records by Name</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>USN</th>
+                <th>Branch</th>
+                <th>Email</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody id="studentTableBody">
+            
+        </tbody>
+    </table>
+
+    <script>
+        const students = [
+        { id: 2, name: 'Aarav Sharma', usn: '1AJ23CS002', branch: 'CSE', email: 'aarav.sharma@gmail.com', address: 'Bangalore' },
+        { id: 8, name: 'Ishaan Verma', usn: '1AJ23CS008', branch: 'CSE', email: 'ishaan.verma@gmail.com', address: 'Hyderabad' },
+        { id: 5, name: 'Rajesh Patel', usn: '1AJ23CS005', branch: 'CSE', email: 'rajesh.patel@gmail.com', address: 'Ahmedabad' },
+        { id: 1, name: 'Karan Gupta', usn: '1AJ23DS001', branch: 'DS', email: 'karan.gupta@gmail.com', address: 'Jaipur' },
+        { id: 9, name: 'Aditya Prasad', usn: '1AJ23IS009', branch: 'ISE', email: 'aditya.prasad@gmail.com', address: 'Kolkata' },
+        { id: 6, name: 'Rohit Singh', usn: '1AJ23CY006', branch: 'Cyber', email: 'rohit.singh@gmail.com', address: 'Chennai' },
+        { id: 7, name: 'Nikhil Tiwari', usn: '1AJ23EC007', branch: 'ECE', email: 'nikhil.tiwari@gmail.com', address: 'Pune' },
+        { id: 4, name: 'Anjali Mehta', usn: '1AJ23CS004', branch: 'CSE', email: 'anjali.mehta@gmail.com', address: 'Delhi' },
+        { id: 10, name: 'Priya Nair', usn: '1AJ23ME010', branch: 'ME', email: 'priya.nair@gmail.com', address: 'Thiruvananthapuram' },
+        { id: 3, name: 'Vikas Yadav', usn: '1AJ23CI003', branch: 'CIVIL', email: 'vikas.yadav@gmail.com', address: 'Lucknow' }
+    ]
+    
+
+        function selectionSort(arr, key) {
+            const n = arr.length;
+            for (let i = 0; i < n - 1; i++) {
+                let minIndex = i;
+                for (let j = i + 1; j < n; j++) {
+                    if (arr[j][key] < arr[minIndex][key]) {
+                        minIndex = j;
+                    }
+                }
+                [arr[i], arr[minIndex]] = [arr[minIndex], arr[i]];
+            }
+        }
+
+        function displayStudents(students) {
+            const tableBody = document.getElementById('studentTableBody');
+            tableBody.innerHTML = '';
+            students.forEach(student => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td data-label="ID">${student.id}</td>
+                    <td data-label="Name">${student.name}</td>
+                    <td data-label="USN">${student.usn}</td>
+                    <td data-label="Branch">${student.branch}</td>
+                    <td data-label="Email">${student.email}</td>
+                    <td data-label="Address">${student.address}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        selectionSort(students, 'name');
+        displayStudents(students);
+    </script>
+</body>
+</html>
