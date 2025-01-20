@@ -12,6 +12,14 @@ def increment_page_view(page_name):
     page_view.view_count += 1
     page_view.save()
 
+def increment_branch_view(branch):
+    branch.view_count += 1
+    branch.save()
+
+def increment_subject_view(subject):
+    subject.view_count += 1
+    subject.save()
+
 def defualt(request):
     return render(request, 'index.html')
     
@@ -28,6 +36,8 @@ def branch_page(request, semester_id):
     increment_page_view('branch_page')
     semester = get_object_or_404(Semester, id=semester_id)
     branches = Branch.objects.filter(semester=semester)
+    for branch in branches:
+        increment_branch_view(branch)
     page_views = {
         'branch_page': PageView.objects.get(page_name='branch_page').view_count,
     }
@@ -37,6 +47,8 @@ def subject_page(request, branch_id):
     increment_page_view('subject_page')
     branch = get_object_or_404(Branch, id=branch_id)
     subjects = Subject.objects.filter(branch=branch)
+    for subject in subjects:
+        increment_subject_view(subject)
     page_views = {
         'subject_page': PageView.objects.get(page_name='subject_page').view_count,
     }

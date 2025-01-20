@@ -13,12 +13,14 @@ class Semester(models.Model):
 class Branch(models.Model):
     name = models.CharField(max_length=50)  # e.g., "CSE"
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
+    view_count = models.PositiveIntegerField(default=0)
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)  # e.g., "Computer Networks"
     subjectcode = models.CharField(max_length=10)  # e.g., "CS  601"
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
+    view_count = models.PositiveIntegerField(default=0)
 
 class Module(models.Model):
     name = models.CharField(max_length=100)  # e.g., "Module 1"
