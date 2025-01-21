@@ -1,70 +1,35 @@
 from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from requests import request
-from .models import Semester, Branch, Subject, Module, TempModule, TempBranch, TempSubject, PageView
+from .models import Semester, Branch, Subject, Module, TempModule, TempBranch, TempSubject
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from natsort import natsorted #to fix the issue where 10 comes before 1 in the modules page
 
-def increment_page_view(page_name):
-    page_view, created = PageView.objects.get_or_create(page_name=page_name)
-    page_view.view_count += 1
-    page_view.save()
-
-def increment_branch_view(branch):
-    branch.view_count += 1
-    branch.save()
-
-def increment_subject_view(subject):
-    subject.view_count += 1
-    subject.save()
-
 def defualt(request):
     return render(request, 'index.html')
-    
 
 def main_page(request):
-    increment_page_view('main_page')
     semesters = Semester.objects.all()
-    page_views = {
-        'main_page': PageView.objects.get(page_name='main_page').view_count,
-    }
-    return render(request, 'main.html', {'semesters': semesters, 'page_views': page_views})
+    return render(request, 'main.html', {'semesters': semesters})
 
 def branch_page(request, semester_id):
-    increment_page_view('branch_page')
     semester = get_object_or_404(Semester, id=semester_id)
     branches = Branch.objects.filter(semester=semester)
-    for branch in branches:
-        increment_branch_view(branch)
-    page_views = {
-        'branch_page': PageView.objects.get(page_name='branch_page').view_count,
-    }
-    return render(request, 'branches.html', {'branches': branches, 'semester_name': semester.name, 'page_views': page_views})
+    return render(request, 'branches.html', {'branches': branches, 'semester_name': semester.name})
 
 def subject_page(request, branch_id):
-    increment_page_view('subject_page')
     branch = get_object_or_404(Branch, id=branch_id)
     subjects = Subject.objects.filter(branch=branch)
-    for subject in subjects:
-        increment_subject_view(subject)
-    page_views = {
-        'subject_page': PageView.objects.get(page_name='subject_page').view_count,
-    }
-    return render(request, 'subjects.html', {'subjects': subjects, 'branch': branch, 'page_views': page_views})
+    return render(request, 'subjects.html', {'subjects': subjects, 'branch': branch})
 
 def modules_page(request, subject_id):
-    increment_page_view('modules_page')
     modules = Module.objects.filter(subject_id=subject_id)
     modules = natsorted(modules, key=lambda x: x.name) #to fix the issue where 10 comes before 1 in the modules page
     subject = get_object_or_404(Subject, id=subject_id)
     subject_code = subject.subjectcode
-    page_views = {
-        'modules_page': PageView.objects.get(page_name='modules_page').view_count,
-    }
-    return render(request, 'modules.html', {'modules': modules, 'subject_name': subject.name, 'subject_code': subject_code, 'page_views': page_views})
-
+    return render(request, 'modules.html', {'modules': modules, 'subject_name': subject.name, 'subject_code': subject_code})
 
 def upload_module(request):
     if request.method == 'POST':
@@ -109,7 +74,6 @@ def upload_module(request):
     subjects = Subject.objects.all()
 
     return render(request, 'upload_module.html', {'semesters': semesters, 'branches': branches, 'subjects': subjects})
-
 
 def create_branch(request):
     if request.method == 'POST':
