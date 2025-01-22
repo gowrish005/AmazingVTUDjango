@@ -1,129 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazing Team</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'mainapp/style.css' %}">
-    <script src="{% static 'mainapp/script.js' %}" defer></script>
-</head>
+{% block title %}Amazing Team - Modules{% endblock %}
 
-<body>
-    <div class="loader">
-        <div class="loader-content"></div>
+{% block content %}
+<div class="loader">
+    <div class="loader-content"></div>
+</div>
+
+<div id="particles-js"></div>
+
+<div class="scroll-indicator">
+    <div class="scroll-progress"></div>
+</div>
+<div id="canvas-container" class="absolute inset-0"></div>
+<div class="text-center z-10" style="margin-top: 100px;">
+    <h1 class="text-7xl font-bold mb-6 floating" style="opacity: 0.6073;">{{ subject_name }} | {{ subject_code }}</h1>
+    <div class="mt-12 flex justify-center space-x-4">
+        <a href="/" class="glowing-btn" style="margin-top: 30px;">
+            Home Page
+        </a>
     </div>
+</div>
 
-    <div id="particles-js"></div>
-
-    <div class="scroll-indicator">
-        <div class="scroll-progress"></div>
-    </div>
-    <div id="canvas-container" class="absolute inset-0"></div>
-    <div class="text-center z-10" style="margin-top: 100px;">
-        <h1 class="text-7xl font-bold mb-6 floating" style="opacity: 0.6073;">{{ subject_name }} | {{ subject_code }}</h1>
-        <div class="mt-12 flex justify-center space-x-4">
-            <a href="/" class="glowing-btn" style="margin-top: 30px;">
-                Home Page
-            </a>
-        </div>
-    </div>
-
-    <section id="textbooks" class="py-20">
-        {% comment %} <h2 class="text-5xl text-gray-300 mb-4 text-center z-10 font-bold">Text Books</h2> {% endcomment %}
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {% for module in modules %}
-                <div class="program cyber-border">
-                    <div class="program-content {% if not module.image %}h-[300px]{% else %}h-[400px]{% endif %}">
-                        <div class="program-front">
-                            {% if module.image %}
-                            <img src="{{ module.image.url }}" alt="{{ module.name }}" class="w-full h-48 object-cover rounded-t-lg">
-                            {% endif %}
-                            <div class="p-6">
-                                <h3 class="text-xl font-bold mb-4">{{ module.subject.name }} - {{ module.name }}</h3>
-                                <p class="text-gray-300">{{ module.description }}</p>
-
-                            </div>
+<section id="textbooks" class="py-20">
+    {% comment %} <h2 class="text-5xl text-gray-300 mb-4 text-center z-10 font-bold">Text Books</h2> {% endcomment %}
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for module in modules %}
+            <div class="program cyber-border">
+                <div class="program-content {% if not module.image %}h-[300px]{% else %}h-[400px]{% endif %}">
+                    <div class="program-front">
+                        {% if module.image %}
+                        <img src="{{ module.image.url }}" alt="{{ module.name }}" class="w-full h-48 object-cover rounded-t-lg">
+                        {% endif %}
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold mb-4">{{ module.subject.name }} - {{ module.name }}</h3>
+                            <p class="text-gray-300">{{ module.description }}</p>
                         </div>
-                        <div class="program-back rounded-lg">
-                            <h3 class="text-xl font-bold mb-6">Program Actions</h3>
-                            <div class="space-y-4 w-full">
-                                <a href="{{ module.file.url }}" class="glowing-btn block text-center" target="_blank">
-                                    <i class="fas fa-play mr-2"></i>View PDF
-                                </a>
-                                <a href="{{ module.file.url }}" download class="glowing-btn block text-center">
-                                    <i class="fas fa-download mr-2"></i>Download PDF
-                                </a>
-                            </div>
+                    </div>
+                    <div class="program-back rounded-lg">
+                        <h3 class="text-xl font-bold mb-6">Program Actions</h3>
+                        <div class="space-y-4 w-full">
+                            <a href="{{ module.file.url }}" class="glowing-btn block text-center" target="_blank">
+                                <i class="fas fa-play mr-2"></i>View PDF
+                            </a>
+                            <a href="{{ module.file.url }}" download class="glowing-btn block text-center">
+                                <i class="fas fa-download mr-2"></i>Download PDF
+                            </a>
                         </div>
                     </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
-    </section>
+    </div>
+</section>
 
-    <section class="py-20">
-        <div class="container mx-auto px-4">
-            <div class="cyber-border max-w-2xl mx-auto p-8">
-                <h2 class="text-4xl font-bold mb-8 text-center">Get in Touch</h2>
-                <form action="https://formsubmit.co/32711d969a8a2a4c4c54343d7e00d7ee" method="POST" class="space-y-6">
-                    <div class="relative">
-                        <input type="text" name="name" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
-                        <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Name</label>
-                    </div>
-                    <div class="relative">
-                        <input type="email" name="email" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
-                        <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Email</label>
-                    </div>
-                    <div class="relative">
-                        <textarea name="message" rows="4" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all"></textarea>
-                        <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Message</label>
-                    </div>
-                    <button type="submit" class="glowing-btn w-full">
-                        <i class="fas fa-paper-plane mr-2"></i>Send Message
-                    </button>
-                </form>
-            </div>
+<section class="py-20">
+    <div class="container mx-auto px-4">
+        <div class="cyber-border max-w-2xl mx-auto p-8">
+            <h2 class="text-4xl font-bold mb-8 text-center">Get in Touch</h2>
+            <form action="https://formsubmit.co/32711d969a8a2a4c4c54343d7e00d7ee" method="POST" class="space-y-6">
+                <div class="relative">
+                    <input type="text" name="name" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                    <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Name</label>
+                </div>
+                <div class="relative">
+                    <input type="email" name="email" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all">
+                    <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Email</label>
+                </div>
+                <div class="relative">
+                    <textarea name="message" rows="4" required class="w-full bg-gray-800/50 border-2 border-gray-700 rounded-lg p-4 focus:border-primary transition-all"></textarea>
+                    <label class="absolute left-4 -top-3 bg-gray-800 px-2 text-sm">Your Message</label>
+                </div>
+                <button type="submit" class="glowing-btn w-full">
+                    <i class="fas fa-paper-plane mr-2"></i>Send Message
+                </button>
+            </form>
         </div>
-    </section>
+    </div>
+</section>
 
-    <footer class="py-12 relative overflow-hidden">
-        <div class="container mx-auto px-4 text-center">
-            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 mb-8">
-                <a href="https://gowrish005.vercel.app/" class="glowing-btn" target="_blank">
-                    <i class="fas fa-user-shield mr-2"></i>Admin
-                </a>
-                <a href="https://portfolio-sahilagowdas-projects.vercel.app/" class="glowing-btn" target="_blank">
-                    <i class="fas fa-paint-brush mr-2"></i>Designer
-                </a>
-                <a href="https://github.com/the-amazing-team" class="glowing-btn" target="_blank">
-                    <i class="fas fa-users mr-2"></i>Team
-                </a>
-            </div>
-            <a href="#" onclick="confirmRedirect(event)">
-                <img src="https://northcampus.cambridge.edu.in/wp-content/uploads/2021/03/NC-site-Logo.png" class="w-30 mx-auto mb-8" alt="Logo">
-                <p class="text-gray-400">© 2025 The Amazing Team @CITNC</p>
+<footer class="py-12 relative overflow-hidden">
+    <div class="container mx-auto px-4 text-center">
+        <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-8 mb-8">
+            <a href="https://gowrish005.vercel.app/" class="glowing-btn" target="_blank">
+                <i class="fas fa-user-shield mr-2"></i>Admin
             </a>
-            <script>
-                function confirmRedirect(event) {
-                    event.preventDefault();
-                    if (confirm('Do you want to go to the college website?')) {
-                        window.open('https://northcampus.cambridge.edu.in/', '_blank');
-                    }
-                }
-            </script>
+            <a href="https://portfolio-sahilagowdas-projects.vercel.app/" class="glowing-btn" target="_blank">
+                <i class="fas fa-paint-brush mr-2"></i>Designer
+            </a>
+            <a href="https://github.com/the-amazing-team" class="glowing-btn" target="_blank">
+                <i class="fas fa-users mr-2"></i>Team
+            </a>
         </div>
-    </footer>
-</body>
-
-</html>
+        <a href="#" onclick="confirmRedirect(event)">
+            <img src="https://northcampus.cambridge.edu.in/wp-content/uploads/2021/03/NC-site-Logo.png" class="w-30 mx-auto mb-8" alt="Logo">
+            <p class="text-gray-400">© 2025 The Amazing Team @CITNC</p>
+        </a>
+        <script>
+            function confirmRedirect(event) {
+                event.preventDefault();
+                if (confirm('Do you want to go to the college website?')) {
+                    window.open('https://northcampus.cambridge.edu.in/', '_blank');
+                }
+            }
+        </script>
+    </div>
+</footer>
+{% endblock %}

@@ -3,33 +3,39 @@ from django.shortcuts import redirect, render, get_object_or_404
 from requests import request
 from .models import Semester, Branch, Subject, Module, TempModule, TempBranch, TempSubject
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.contrib.admin.views.decorators import staff_member_required
 from natsort import natsorted #to fix the issue where 10 comes before 1 in the modules page
+from django.template.loader import render_to_string
+from django.urls import reverse
 
 def defualt(request):
     return render(request, 'index.html')
 
 def main_page(request):
     semesters = Semester.objects.all()
-    return render(request, 'main.html', {'semesters': semesters})
+    meta_description = "Welcome to Amazing Team - A platform for sharing educational resources. Select your semester to get started."
+    return render(request, 'main.html', {'semesters': semesters, 'meta_description': meta_description})
 
 def branch_page(request, semester_id):
     semester = get_object_or_404(Semester, id=semester_id)
     branches = Branch.objects.filter(semester=semester)
-    return render(request, 'branches.html', {'branches': branches, 'semester_name': semester.name})
+    meta_description = f"Select your branch for {semester.name} semester at CIT-NC Bangalore."
+    return render(request, 'branches.html', {'branches': branches, 'semester_name': semester.name, 'meta_description': meta_description})
 
 def subject_page(request, branch_id):
     branch = get_object_or_404(Branch, id=branch_id)
     subjects = Subject.objects.filter(branch=branch)
-    return render(request, 'subjects.html', {'subjects': subjects, 'branch': branch})
+    meta_description = f"Select your subject for the {branch.name} branch at CIT-NC Bangalore."
+    return render(request, 'subjects.html', {'subjects': subjects, 'branch': branch, 'meta_description': meta_description})
 
 def modules_page(request, subject_id):
     modules = Module.objects.filter(subject_id=subject_id)
     modules = natsorted(modules, key=lambda x: x.name) #to fix the issue where 10 comes before 1 in the modules page
     subject = get_object_or_404(Subject, id=subject_id)
     subject_code = subject.subjectcode
-    return render(request, 'modules.html', {'modules': modules, 'subject_name': subject.name, 'subject_code': subject_code})
+    meta_description = f"View and download modules for {subject.name} ({subject_code}) at CIT-NC Bangalore."
+    return render(request, 'modules.html', {'modules': modules, 'subject_name': subject.name, 'subject_code': subject_code, 'meta_description': meta_description})
 
 def upload_module(request):
     if request.method == 'POST':
@@ -140,3 +146,13 @@ def admin_control_panel(request):
         'subjects': subjects,
         'modules': modules
     })
+
+def sitemap(request):
+    urls = [
+        request.build_absolute_uri(reverse('main')),
+        request.build_absolute_uri(reverse('create_branch')),
+        request.build_absolute_uri(reverse('create_subject')),
+        # Add more URLs as needed
+    ]
+    xml = render_to_string('sitemap.xml', {'urls': urls})
+    return HttpResponse(xml, content_type='application/xml')

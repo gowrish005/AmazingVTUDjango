@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="{{ meta_description|default:'AmazingVTU - Your premier destination for VTU notes, question papers, model papers, and comprehensive study materials.' }}">
+    <meta name="keywords" content="VTU notes, VTU question papers, VTU model papers, VTU study materials, engineering notes, VTU syllabus, AmazingVTU, VTU textbooks, VTU resources, VTU lab manuals, VTU previous year papers, VTU results, VTU circulars, VTU regulation notes, VTU CBCS syllabus, VTU engineering, VTU tutorials, VTU e-learning, VTU solved papers, VTU exams, VTU calendar, VTU news, VTU updates, VTU academic schedules, VTU practicals, VTU projects, VTU online resources, VTU question banks, VTU downloads, VTU PDF materials, VTU subject modules, VTU branch-wise notes, VTU toppers' answers, VTU open electives, VTU course outlines, VTU programming tutorials, VTU coding materials, VTU lab experiments, VTU theory exams, VTU BE resources, VTU BTech notes, VTU exam preparation, VTU best resources, VTU books, VTU eBooks, VTU supplementary exams, VTU arrear papers, VTU solutions, VTU sample questions, VTU diploma materials, VTU academic excellence, VTU academic guides, VTU university, VTU Karnataka, VTU engineering branches, VTU semester notes, VTU core subjects, VTU certification, VTU academic planner, VTU model exams, VTU technical papers, VTU assignment help, VTU internal exams, VTU online exams, VTU mock tests, VTU tutorials for beginners, VTU exam strategies, VTU score improvement, VTU final year projects, VTU online coaching, VTU webinars, VTU course notes, VTU professional courses, VTU curriculum, VTU e-learning resources, VTU digital library, VTU department-wise notes, VTU online lectures, VTU distance learning, VTU coding exams, VTU grading system, VTU regulations, VTU e-notes, VTU mechanical notes, VTU civil engineering notes, VTU electrical notes, VTU electronics notes, VTU CSE notes, VTU IT notes, VTU placement training, VTU preparation tips, VTU FAQs, VTU resource center">
+    <meta name="author" content="AmazingVTU Team">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#007bff">
+
+    <title>{% block title %}Amazing Team{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'mainapp/style.css' %}">
+    <script src="{% static 'mainapp/script.js' %}" defer></script>
+    <link rel="icon" href="{% static 'mainapp/images/favicon.png' %}" type="image/x-icon">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Amazing Team">
+    <meta property="og:description" content="{{ meta_description|default:'AmazingVTU - Your premier destination for VTU notes, question papers, model papers, and comprehensive study materials.' }}">
+    <meta property="og:image" content="{% static 'mainapp/images/og-image.png' %}">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Amazing Team">
+    <meta name="twitter:description" content="{{ meta_description|default:'AmazingVTU - Your premier destination for VTU notes, question papers, model papers, and comprehensive study materials.' }}">
+    <meta name="twitter:image" content="{% static 'mainapp/images/twitter-image.png' %}">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    {% block content %}{% endblock %}
+</body>
+</html>
